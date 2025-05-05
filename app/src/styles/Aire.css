@@ -1,0 +1,27 @@
+.aire-container {
+    background: #f0fdf4;
+    padding-bottom: 2rem;
+    font-family: "Delius Swash Caps", cursive;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .aire-card {
+    background-color: #ffffff;
+    border-radius: 20px;
+    border: none;
+  }
+  
+  .aire-titulo {
+    font-size: 2rem;
+    color: #198754;
+  }
+  
+  .aire-indice {
+    font-size: 1.5rem;
+    color: #444;
+  }
+
+  .aire-nivel {
+    font-size: 1.5rem;
+  }

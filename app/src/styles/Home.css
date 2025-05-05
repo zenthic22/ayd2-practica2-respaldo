@@ -1,0 +1,26 @@
+.home-container {
+    background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
+    padding-bottom: 2rem;
+    min-height: 60vh;
+    font-family: "Delius Swash Caps", cursive;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .home-card {
+    background-color: #ffffff;
+    border-radius: 20px;
+    border: none;
+    padding: 2rem;
+  }
+  
+  .home-title {
+    font-size: 2.5rem;
+    color: #007cf0;
+    margin-bottom: 1rem;
+  }
+  
+  .home-text {
+    font-size: 1.2rem;
+    color: #444;
+  }

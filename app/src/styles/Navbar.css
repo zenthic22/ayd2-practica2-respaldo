@@ -1,0 +1,23 @@
+.custom-navbar {
+    background: linear-gradient(90deg, #007cf0, #00dfd8); /* cielo y brisa */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    font-family: "Delius Swash Caps", cursive;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.5rem;
+  }
+  
+  .custom-navbar .navbar-brand,
+  .custom-navbar .nav-link {
+    color: #ffffff !important;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  
+  .custom-navbar .nav-link:hover {
+    color: #ffe082 !important; /* amarillo suave al pasar */
+  }
+  
+  .custom-navbar .navbar-brand:hover {
+    color: #fff176 !important;
+  }
