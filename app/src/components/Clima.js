@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Card, Container, Row, Col } from "react-bootstrap";
+import TemperatureChart from "./TemperaturaChart";
 import "../styles/Clima.css"
 
 function Clima() {
-    const climaSimulado = {
-        codigo: 2,
-        descripcion: "Parcialmente nublado",
-    }
+    const [clima, setClima] = useState(null);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        axios.get("http://localhost:3001/micro-clima/clima")
+            .then((res) => {
+                setClima(res.data);
+            })
+            .catch((err) => {
+                console.error(err);
+                setError("Error al obtener el clima")
+            })
+    }, [])
 
     return (
         <Container className="mt-4 clima-container">
@@ -15,13 +26,23 @@ function Clima() {
                     <Card className="text-center clima-card shadow">
                         <Card.Body>
                             <Card.Title className="clima-titulo">Clima Actual</Card.Title>
-                            <Card.Text className="clima-texto">
-                                <strong>Descripcion:</strong> {climaSimulado.descripcion}
-                            </Card.Text>
-                            <Card.Text className="clima-texto">
-                                <strong>Codigo:</strong> {climaSimulado.codigo}
-                            </Card.Text>
+                            {error && <p className="text-danger">{error}</p>}
+                            {clima ? (
+                                <>
+                                    <Card.Text className="clima-texto">
+                                        <strong>Descripcion:</strong> {clima.descripcion}
+                                    </Card.Text>
+                                    <Card.Text className="clima-texto">
+                                        <strong>Codigo:</strong> {clima.codigo_clima}
+                                    </Card.Text>
+                                </>
+                            ): (
+                                <p>Cargando clima...</p>
+                            )}
                         </Card.Body>
+                    </Card>
+                    <Card className="shadow p-3">
+                        <TemperatureChart/>
                     </Card>
                 </Col>
             </Row>
