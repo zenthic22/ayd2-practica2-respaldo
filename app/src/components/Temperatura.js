@@ -10,7 +10,7 @@ function Temperatura() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        let url = TEMP_SERVICE_URL+'/micreo-temperattura/actual'
+        let url = TEMP_SERVICE_URL+'/micro-temperattura/actual'
         axios.get(url)
             .then((res) => {
                 setTemperatura(res.data);

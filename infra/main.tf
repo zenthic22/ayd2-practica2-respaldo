@@ -62,7 +62,7 @@ NETRC
     if [ ! -d infra ]; then
       git clone -b develop ${var.repo_url} infra
     else
-      cd infra && git pull
+      cd infra && git pull  --rebase origin develop 
     fi
   EOF
 }
@@ -73,7 +73,9 @@ resource "aws_instance" "clima" {
   instance_type               = var.instance_type
   vpc_security_group_ids      = [aws_security_group.app_sg.id]
   associate_public_ip_address = true
-
+  root_block_device {
+    delete_on_termination = true
+  }
   user_data = <<-EOF
 ${local.user_data_common}
     # Desplegar microservicio clima
@@ -95,7 +97,9 @@ resource "aws_instance" "temperatura" {
   instance_type               = var.instance_type
   vpc_security_group_ids      = [aws_security_group.app_sg.id]
   associate_public_ip_address = true
-
+  root_block_device {
+    delete_on_termination = true
+  }
   user_data = <<-EOF
 ${local.user_data_common}
     # Desplegar microservicio temperatura
@@ -117,7 +121,9 @@ resource "aws_instance" "aire" {
   instance_type               = var.instance_type
   vpc_security_group_ids      = [aws_security_group.app_sg.id]
   associate_public_ip_address = true
-
+  root_block_device {
+    delete_on_termination = true
+  }
   user_data = <<-EOF
 ${local.user_data_common}
     # Desplegar microservicio aire
@@ -139,7 +145,9 @@ resource "aws_instance" "frontend" {
   instance_type               = var.instance_type
   vpc_security_group_ids      = [aws_security_group.app_sg.id]
   associate_public_ip_address = true
-
+  root_block_device {
+    delete_on_termination = true
+  }
   user_data = <<-EOF
 ${local.user_data_common}
     # Desplegar frontend React
