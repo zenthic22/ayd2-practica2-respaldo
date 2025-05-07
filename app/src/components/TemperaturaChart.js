@@ -4,6 +4,7 @@ import axios from "axios";
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from "recharts";
+import { WEATHER_SERVICE_URL } from "../config/index"
 
 function TemperatureChart() {
     const [data, setData] = useState([]);
@@ -11,7 +12,8 @@ function TemperatureChart() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get("http://localhost:3001/micro-clima/temperaturas")
+        let url = WEATHER_SERVICE_URL + '/micro-clima/temperaturas' 
+        axios.get(url)
             .then((res) => {
                 console.log("Datos recibidos:", res.data);
                 // Verificación de estructura de datos

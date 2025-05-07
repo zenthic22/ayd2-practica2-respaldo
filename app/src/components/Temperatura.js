@@ -3,13 +3,15 @@ import { Card, Container, Row, Col } from "react-bootstrap";
 import TemperatureChart from "./TemperaturaGrafica"; // si tienes una gráfica
 import axios from "axios";
 import "../styles/Temperatura.css";
+import { TEMP_SERVICE_URL } from "../config/index"
 
 function Temperatura() {
     const [temperatura, setTemperatura] = useState(null);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get("http://localhost:3001/micro-temperattura/actual")
+        let url = TEMP_SERVICE_URL+'/micreo-temperattura/actual'
+        axios.get(url)
             .then((res) => {
                 setTemperatura(res.data);
             })

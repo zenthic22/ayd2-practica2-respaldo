@@ -3,6 +3,7 @@ import axios from "axios";
 import { Card, Container, Row, Col } from "react-bootstrap";
 import TemperatureChart from "./TemperaturaChart";
 import "../styles/Clima.css"
+import { TEMP_SERVICE_URL, WEATHER_SERVICE_URL } from "../config/index"
 
 const descripciones = {
     0: "Despejado",
@@ -40,7 +41,7 @@ function Clima() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get("http://localhost:3001/micro-clima/clima")
+        axios.get(WEATHER_SERVICE_URL + "/micro-clima/clima")
             .then((res) => {
                 setClima(res.data);
             })

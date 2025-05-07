@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Container, Row, Col, ListGroup, Spinner, Alert } from "react-bootstrap";
 import "../styles/Aire.css";
+import { AIR_SERVICE_URL, TEMP_SERVICE_URL } from "../config/index"
 
 function CalidadAire() {
   const [actual, setActual] = useState(null);
@@ -22,7 +23,7 @@ function CalidadAire() {
   };
 
   useEffect(() => {
-    const base = "http://localhost:3002/micro-aire";
+    const base = AIR_SERVICE_URL + "/micro-aire";
     Promise.all([
       axios.get(`${base}/actual`),
       axios.get(`${base}/horario`),

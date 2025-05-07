@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  clima:
+    build:
+      context: ./backend/microservicio-clima
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    networks:
+      - app-network
+
+  temperatura:
+    build:
+      context: ./backend/microservicio-temperatura
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+ 
+  services:
+    aire:
+      build:
+        context: ./backend/microservicio-aire
+        dockerfile: Dockerfile
+      ports:
+        - "3002:3002"
+      networks:
+        - app-network
+
+  frontend:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - "4500:80"
+    depends_on:
+      - clima
+      - temperatura
+      - aire
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

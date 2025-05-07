@@ -34,7 +34,7 @@ async function getTemperaturasPorHora() {
             };
         });
 
-        return datos.slice(0, 12); // puedes ajustar esto si quieres más/menos horas
+        return datos.slice(0, 12); 
     } catch (error) {
         console.error("Error al obtener temperaturas por hora:", error.message);
         return [];
