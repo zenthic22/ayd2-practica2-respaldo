@@ -34,37 +34,38 @@ resource "aws_security_group" "app_sg" {
   }
 }
 
-// Función común de user_data
 locals {
   user_data_common = <<-EOF
-    #!/bin/bash
-    # Actualizar repos y paquetes
-    yum update -y
-    # Instalar Git (no disponible en amazon-linux-extras)
-    sudo yum install -y git
-    # Instalar Docker
-    amazon-linux-extras install docker -y
-    service docker start
-    usermod -a -G docker ec2-user
+#!/bin/bash
+set -xe
+exec > >(tee /var/log/user-data.log) 2>&1
 
+# Esperar a que termine cualquier yum en curso
+while pgrep yum; do sleep 1; done
 
-    # Configurar credenciales Git en .netrc
-    cat > /home/ec2-user/.netrc <<NETRC
+# Instalar Git y Docker
+yum install -y git
+amazon-linux-extras install docker -y
+service docker start
+usermod -a -G docker ec2-user
+
+# Configurar credenciales Git en .netrc
+cat > /home/ec2-user/.netrc <<NETRC
 machine github.com
 login ${var.git_username}
 password ${var.git_token}
 NETRC
-    chown ec2-user:ec2-user /home/ec2-user/.netrc
-    chmod 600 /home/ec2-user/.netrc
+chown ec2-user:ec2-user /home/ec2-user/.netrc
+chmod 600 /home/ec2-user/.netrc
 
-    cd /home/ec2-user
-    # Clonar o actualizar el repositorio
-    if [ ! -d infra ]; then
-      git clone -b develop ${var.repo_url} infra
-    else
-      cd infra && git pull
-    fi
-  EOF
+# Clonar o actualizar repositorio
+cd /home/ec2-user
+if [ ! -d infra ]; then
+  git clone -b develop ${var.repo_url} infra
+else
+  cd infra && git pull
+fi
+EOF
 }
 
 // Instancia para microservicio clima
@@ -76,13 +77,16 @@ resource "aws_instance" "clima" {
 
   user_data = <<-EOF
 ${local.user_data_common}
-    # Desplegar microservicio clima
-    cd infra/backend/microservicio-clima
-    docker build -t clima-image .
-    docker run -d --name clima -p 3001:3001 clima-image
-  EOF
 
-  tags = { Name = "srv-clima" }
+# Desplegar microservicio clima
+cd /home/ec2-user/infra/backend/microservicio-clima
+docker build -t clima-image .
+docker run -d --name clima -p 3001:3001 clima-image
+EOF
+
+  tags = {
+    Name = "srv-clima"
+  }
 }
 resource "aws_eip" "clima_ip" {
   vpc      = true
@@ -98,13 +102,16 @@ resource "aws_instance" "temperatura" {
 
   user_data = <<-EOF
 ${local.user_data_common}
-    # Desplegar microservicio temperatura
-    cd infra/backend/microservicio-temperatura
-    docker build -t temperatura-image .
-    docker run -d --name temperatura -p 3000:3000 temperatura-image
-  EOF
 
-  tags = { Name = "srv-temperatura" }
+# Desplegar microservicio temperatura
+cd /home/ec2-user/infra/backend/microservicio-temperatura
+docker build -t temperatura-image .
+docker run -d --name temperatura -p 3000:3000 temperatura-image
+EOF
+
+  tags = {
+    Name = "srv-temperatura"
+  }
 }
 resource "aws_eip" "temperatura_ip" {
   vpc      = true
@@ -120,13 +127,16 @@ resource "aws_instance" "aire" {
 
   user_data = <<-EOF
 ${local.user_data_common}
-    # Desplegar microservicio aire
-    cd infra/backend/microservicio-aire
-    docker build -t aire-image .
-    docker run -d --name aire -p 3002:3002 aire-image
-  EOF
 
-  tags = { Name = "srv-aire" }
+# Desplegar microservicio aire
+cd /home/ec2-user/infra/backend/microservicio-aire
+docker build -t aire-image .
+docker run -d --name aire -p 3002:3002 aire-image
+EOF
+
+  tags = {
+    Name = "srv-aire"
+  }
 }
 resource "aws_eip" "aire_ip" {
   vpc      = true
@@ -142,13 +152,16 @@ resource "aws_instance" "frontend" {
 
   user_data = <<-EOF
 ${local.user_data_common}
-    # Desplegar frontend React
-    cd infra/app
-    docker build -t frontend-image .
-    docker run -d --name frontend -p 4500:80 frontend-image
-  EOF
 
-  tags = { Name = "srv-frontend" }
+# Desplegar frontend React
+cd /home/ec2-user/infra/app
+docker build -t frontend-image .
+docker run -d --name frontend -p 4500:80 frontend-image
+EOF
+
+  tags = {
+    Name = "srv-frontend"
+  }
 }
 resource "aws_eip" "frontend_ip" {
   vpc      = true
