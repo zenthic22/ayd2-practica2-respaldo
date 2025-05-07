@@ -1,7 +1,4 @@
 infra/variables.tf
-infra/.terraform/
-infra/.terraform.lok.hcl
-infra/terraform.tfstate
-infra/terraform.tfstate.backup
-infra/terraform.tfstate
-infra/terraform.tfstate.backup
+/infra/terraform.tfstate
+/infra/terraform.tfstate.backup
+/infra/.terraform/
